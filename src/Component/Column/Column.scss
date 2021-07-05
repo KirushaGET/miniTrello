@@ -16,6 +16,15 @@
             height: 20px;
             margin: 0 5px;
         }
+
+        input {
+            margin-left: 5px;
+        }
+
+        &:hover {
+            cursor: grab;
+      
+          }
     }
 
     .column__body {
