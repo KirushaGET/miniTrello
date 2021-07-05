@@ -1,23 +1,41 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import Column from './Component/Column/index.js';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [allTasks, setAllTasks] = useState([]);
+  const [columnName, setColumnName] = useState("");
+
+  const newColumn = () => {
+    const newColumnValue = {
+      name: columnName,
+      data: []
+    };
+
+    setAllTasks((prev) => [...prev, newColumnValue]);
+    setColumnName("");
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <div className="app__header">
+        <p>Please enter the name of new column</p>
+        <input onChange={(e) => setColumnName(e.target.value)} value={columnName}/>
+        <button onClick={() => newColumn()}>Add column</button>
+      </div>
+      <div className="app__body">
+        {allTasks.map((column, index) => (
+          <div key={`${column.name}-${index}`}>
+            <Column 
+              column={column} 
+              allTasks={allTasks} 
+              setAllTasks={setAllTasks} 
+              columnIndex={index} 
+            />
+          </div>
+        ))
+        }
+      </div>
     </div>
   );
 }
