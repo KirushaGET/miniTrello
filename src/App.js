@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Column from './Component/Column/index.js';
-import './App.css';
+import './App.scss';
 
 const App = () => {
   const [allTasks, setAllTasks] = useState([]);
@@ -20,7 +20,11 @@ const App = () => {
     <div className="app">
       <div className="app__header">
         <p>Please enter the name of new column</p>
-        <input onChange={(e) => setColumnName(e.target.value)} value={columnName}/>
+        <input 
+          onChange={(e) => setColumnName(e.target.value)} 
+          value={columnName}
+          className="app_input-header-column"
+        />
         <button onClick={() => newColumn()}>Add column</button>
       </div>
       <div className="app__body">

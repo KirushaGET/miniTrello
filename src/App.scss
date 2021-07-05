@@ -1,0 +1,22 @@
+.app {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px;
+
+  .app__header {
+    display: flex;
+    align-items: center;
+    margin: 1vw;
+
+    .app_input-header-column {
+      margin: 0 10px;
+      height: 20px;
+    }
+  }
+
+  .app__body {
+    display: flex;
+    margin: 1vw;
+  }
+}
