@@ -1,7 +1,27 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import './Column.scss';
 
-const Column = ({columnValue, allTasks, setAllTasks, columnIndex, currentColumn, setCurrentColumn, currentTicket, setCurrentTicket}) => {
+export interface StandardComponentProps {
+  columnValue: any, 
+  allTasks: any, 
+  setAllTasks: Dispatch<SetStateAction<any>>, 
+  columnIndex: number, 
+  currentColumn: any, 
+  setCurrentColumn: Dispatch<SetStateAction<any>>, 
+  currentTicket: any, 
+  setCurrentTicket: Dispatch<SetStateAction<any>>
+}
+
+const Column = ({
+  columnValue, 
+  allTasks, 
+  setAllTasks, 
+  columnIndex, 
+  currentColumn, 
+  setCurrentColumn, 
+  currentTicket, 
+  setCurrentTicket
+}: StandardComponentProps) => {
   const [ticketName, setTicketName] = useState("");
   const [isAdding, setIsAdding] = useState(false);
 
@@ -17,7 +37,7 @@ const Column = ({columnValue, allTasks, setAllTasks, columnIndex, currentColumn,
     setIsAdding(false);
   } 
 
-  const deleteTicket = (index) => {
+  const deleteTicket = (index: number) => {
     const tempArray = [...allTasks];
     tempArray[columnIndex].data.splice(index, 1);
     setAllTasks(tempArray);
@@ -29,11 +49,11 @@ const Column = ({columnValue, allTasks, setAllTasks, columnIndex, currentColumn,
     setAllTasks(tempArray);
   }
 
-  const dragStartHandler = (e, columnValue, index) => {
+  const dragStartHandler = (e: React.DragEvent<HTMLDivElement>, columnValue: any, index: number) => {
     setCurrentColumn({value: columnValue, index});
   }
 
-  const dropHandler = (e, columnValue) => {
+  const dropHandler = (e: any, columnValue: any) => {
     e.preventDefault();
     const tempArray = [...allTasks];
     tempArray.splice(currentColumn.index, 1);
@@ -43,20 +63,20 @@ const Column = ({columnValue, allTasks, setAllTasks, columnIndex, currentColumn,
     e.target.style.background = '#f0f0f0';
   }
 
-  const dropOverHandler = (e) => {
+  const dropOverHandler = (e: any) => {
     e.preventDefault();
     e.target.style.background = 'grey';
   }
 
-  const dragEndHandler = (e, isWhite = false) => {
+  const dragEndHandler = (e: any, isWhite = false) => {
     e.target.style.background = isWhite? 'white': '#f0f0f0';
   }
 
-  const dragStartHandlerTicket = (e, ticketValue, index) => {
+  const dragStartHandlerTicket = (e: React.DragEvent<HTMLDivElement>, ticketValue: any, index: number) => {
     setCurrentTicket({value: ticketValue.data[index], index, columnIndex});
   }
 
-  const dropHandlerTicket = (e, ticketValue) => {
+  const dropHandlerTicket = (e: any, ticketValue: any) => {
     e.preventDefault();
     const tempArray = [...allTasks];
     tempArray[currentTicket.columnIndex].data.splice(currentTicket.index, 1);
@@ -93,7 +113,7 @@ const Column = ({columnValue, allTasks, setAllTasks, columnIndex, currentColumn,
       </div>
       <div  className="column__body">
         {
-          columnValue.data?.map((ticket, index) => (
+          columnValue.data?.map((ticket: any, index: number) => (
             <div 
               key={`${ticket}-${index}`} 
               className="column__ticket"

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import Column from './Component/Column/index.js';
+import { useState } from 'react';
+import Column from './Component/Column/index';
 import './App.scss';
 
 const App = () => {
-  const [allTasks, setAllTasks] = useState([]);
+  const [allTasks, setAllTasks] = useState<any>([]);
   const [columnName, setColumnName] = useState("");
   const [currentColumn, setCurrentColumn] = useState({});
   const [currentTicket, setCurrentTicket] = useState({});
@@ -14,7 +14,7 @@ const App = () => {
       data: []
     };
 
-    setAllTasks((prev) => [...prev, newColumnValue]);
+    setAllTasks((prev: any) => [...prev, newColumnValue]);
     setColumnName("");
   }
 
@@ -30,7 +30,7 @@ const App = () => {
         <button onClick={() => newColumn()}>Add column</button>
       </div>
       <div className="app__body">
-        {allTasks.map((column, index) => (
+        {allTasks.map((column: any, index: number) => (
           <div 
             key={`${column.name}-${index}`} 
           >
