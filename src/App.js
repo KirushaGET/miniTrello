@@ -36,13 +36,15 @@ const App = () => {
           >
             <Column 
               columnValue={column} 
-              allTasks={allTasks} 
-              setAllTasks={setAllTasks} 
               columnIndex={index} 
-              currentColumn={currentColumn}
-              setCurrentColumn={setCurrentColumn}
-              currentTicket={currentTicket}
-              setCurrentTicket={setCurrentTicket}
+              {...{
+                allTasks, 
+                setAllTasks, 
+                currentColumn, 
+                setCurrentColumn, 
+                currentTicket, 
+                setCurrentTicket
+              }}
             />
           </div>
         ))
