@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Column.scss';
 
-const Column = ({columnValue, allTasks, setAllTasks, columnIndex, currentColumn, setCurrentColumn}) => {
+const Column = ({columnValue, allTasks, setAllTasks, columnIndex, currentColumn, setCurrentColumn, currentTicket, setCurrentTicket}) => {
   const [ticketName, setTicketName] = useState("");
   const [isAdding, setIsAdding] = useState(false);
 
@@ -29,7 +29,6 @@ const Column = ({columnValue, allTasks, setAllTasks, columnIndex, currentColumn,
     setAllTasks(tempArray);
   }
 
-  
   const dragStartHandler = (e, columnValue, index) => {
     setCurrentColumn({value: columnValue, index});
   }
@@ -49,8 +48,22 @@ const Column = ({columnValue, allTasks, setAllTasks, columnIndex, currentColumn,
     e.target.style.background = 'grey';
   }
 
-  const dragEndHandler = (e) => {
-    e.target.style.background = '#f0f0f0';
+  const dragEndHandler = (e, isWhite = false) => {
+    e.target.style.background = isWhite? 'white': '#f0f0f0';
+  }
+
+  const dragStartHandlerTicket = (e, ticketValue, index) => {
+    setCurrentTicket({value: ticketValue.data[index], index, columnIndex});
+  }
+
+  const dropHandlerTicket = (e, ticketValue) => {
+    e.preventDefault();
+    const tempArray = [...allTasks];
+    tempArray[currentTicket.columnIndex].data.splice(currentTicket.index, 1);
+    const indexNewColumn = allTasks[columnIndex].data.indexOf(ticketValue);
+    tempArray[columnIndex].data.splice(indexNewColumn, 0, currentTicket.value);
+    setAllTasks(tempArray);
+    e.target.style.background = 'white';
   }
 
   return (
@@ -81,7 +94,16 @@ const Column = ({columnValue, allTasks, setAllTasks, columnIndex, currentColumn,
       <div  className="column__body">
         {
           columnValue.data?.map((ticket, index) => (
-            <div key={`${ticket}-${index}`} className="column__ticket">
+            <div 
+              key={`${ticket}-${index}`} 
+              className="column__ticket"
+              draggable
+              onDragStart={(e) => dragStartHandlerTicket(e, columnValue, index)}
+              onDrop={(e) => dropHandlerTicket(e, columnValue)}
+              onDragOver={(e) => dropOverHandler(e)}
+              onDragLeave={(e) => dragEndHandler(e, true)}
+              onDragEnd={(e) => dragEndHandler(e, true)}
+            > 
               <p>{ticket.name}</p>
               <button onClick={() => deleteTicket(index)}>Delete Ticket</button>
             </div>

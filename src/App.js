@@ -6,6 +6,7 @@ const App = () => {
   const [allTasks, setAllTasks] = useState([]);
   const [columnName, setColumnName] = useState("");
   const [currentColumn, setCurrentColumn] = useState({});
+  const [currentTicket, setCurrentTicket] = useState({});
 
   const newColumn = () => {
     const newColumnValue = {
@@ -40,6 +41,8 @@ const App = () => {
               columnIndex={index} 
               currentColumn={currentColumn}
               setCurrentColumn={setCurrentColumn}
+              currentTicket={currentTicket}
+              setCurrentTicket={setCurrentTicket}
             />
           </div>
         ))

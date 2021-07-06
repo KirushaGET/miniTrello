@@ -4,6 +4,7 @@
     flex-direction: column;
     outline: 2px solid grey;
     margin-left: 1vw;
+    max-width: 35vw;
     background: #f0f0f0;
 
     .column__header {
@@ -13,7 +14,7 @@
         padding: 0 5px;
 
         button {
-            height: 20px;
+            max-height: 40px;
             margin: 0 5px;
         }
 
@@ -23,26 +24,32 @@
 
         &:hover {
             cursor: grab;
-      
-          }
+        }
     }
 
     .column__body {
         flex-direction: column;
+        margin: 0 5px;
 
         .column__ticket {
             display: flex;
             align-items: center;
             text-align: center;
             outline: 2px solid grey;
-            padding: 0 5px;
-            margin: 10px 5px;
+            margin: 10px 0;
             background-color: white;
-        }
 
-        button {
-            height: 20px;
-            margin: 0 5px;
+            &:hover {
+                cursor: grab;
+            }
+
+            button {
+                margin: 0 5px;  
+            }
+
+            p {
+                hyphens: auto;
+            }
         }
     }
 }
