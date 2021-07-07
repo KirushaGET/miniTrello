@@ -22,7 +22,7 @@ const Column = ({
   currentTicket, 
   setCurrentTicket
 }: StandardComponentProps) => {
-  const [ticketName, setTicketName] = useState("");
+  const [ticketName, setTicketName] = useState('');
   const [isAdding, setIsAdding] = useState(false);
 
   const addNewTicket = () => {
@@ -33,7 +33,7 @@ const Column = ({
 
     tempArray[columnIndex].data.push(newTicketValue);
     setAllTasks(tempArray);
-    setTicketName("");
+    setTicketName('');
     setIsAdding(false);
   } 
 
@@ -93,15 +93,15 @@ const Column = ({
         draggable
         onDragStart={(e) => dragStartHandler(e, columnValue, columnIndex)}
         onDrop={(e) => dropHandler(e, columnValue)}
-        onDragOver={(e) => dropOverHandler(e)}
-        onDragLeave={(e) => dragEndHandler(e)}
-        onDragEnd={(e) => dragEndHandler(e)}
+        onDragOver={dropOverHandler}
+        onDragLeave={dragEndHandler}
+        onDragEnd={dragEndHandler}
       >
         <p>{columnValue.name}</p>
         {isAdding   
           ? <>
             <input onChange={(e) => setTicketName(e.target.value)} value={ticketName}/>
-            <button onClick={() => addNewTicket()}>
+            <button onClick={addNewTicket}>
               Done
             </button>
           </>
@@ -120,7 +120,7 @@ const Column = ({
               draggable
               onDragStart={(e) => dragStartHandlerTicket(e, columnValue, index)}
               onDrop={(e) => dropHandlerTicket(e, columnValue)}
-              onDragOver={(e) => dropOverHandler(e)}
+              onDragOver={dropOverHandler}
               onDragLeave={(e) => dragEndHandler(e, true)}
               onDragEnd={(e) => dragEndHandler(e, true)}
             > 

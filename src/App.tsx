@@ -4,7 +4,7 @@ import './App.scss';
 
 const App = () => {
   const [allTasks, setAllTasks] = useState<any>([]);
-  const [columnName, setColumnName] = useState("");
+  const [columnName, setColumnName] = useState('');
   const [currentColumn, setCurrentColumn] = useState({});
   const [currentTicket, setCurrentTicket] = useState({});
 
@@ -15,7 +15,7 @@ const App = () => {
     };
 
     setAllTasks((prev: any) => [...prev, newColumnValue]);
-    setColumnName("");
+    setColumnName('');
   }
 
   return (
