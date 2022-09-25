@@ -4,11 +4,11 @@ import './App.scss';
 
 export interface allTasksParams {
   name: String;
-  data: Array<{name: String} | Object>;
+  data: Array<{ name: String } | Object>;
 }
 
 export interface currentTicketObject {
-  value: {name: String} | {};
+  value: { name: String } | {};
   index: number;
   columnIndex: number;
 }
@@ -19,10 +19,10 @@ export interface currentColumnObject {
 }
 
 const App = () => {
-  const [allTasks, setAllTasks] = useState <Array<allTasksParams>>([]);
+  const [allTasks, setAllTasks] = useState<Array<allTasksParams>>([]);
   const [columnName, setColumnName] = useState('');
-  const [currentColumn, setCurrentColumn] = useState <currentColumnObject>(Object);
-  const [currentTicket, setCurrentTicket] = useState <currentTicketObject>(Object);
+  const [currentColumn, setCurrentColumn] = useState<currentColumnObject>(Object);
+  const [currentTicket, setCurrentTicket] = useState<currentTicketObject>(Object);
 
   const newColumn = () => {
     const newColumnValue = {
@@ -38,29 +38,27 @@ const App = () => {
     <div className="app">
       <div className="app__header">
         <p>Please enter the name of new column</p>
-        <input 
-          onChange={(e) => setColumnName(e.target.value)} 
+        <input
+          onChange={(e) => setColumnName(e.target.value)}
           value={columnName}
           className="app_input-header-column"
         />
-        <button onClick={() => newColumn()}>Add column</button>
+        <button onClick={newColumn}>Add column</button>
       </div>
       <div className="app__body">
         {allTasks.map((column: allTasksParams, index: number) => (
-          <div 
-            key={`${column.name}-${index}`} 
+          <div
+            key={`${column.name}-${index}`}
           >
-            <Column 
-              columnValue={column} 
-              columnIndex={index} 
-              {...{
-                allTasks, 
-                setAllTasks, 
-                currentColumn, 
-                setCurrentColumn, 
-                currentTicket, 
-                setCurrentTicket
-              }}
+            <Column
+              columnValue={column}
+              columnIndex={index}
+              allTasks={allTasks}
+              setAllTasks={setAllTasks}
+              currentColumn={currentColumn}
+              setCurrentColumn={setCurrentColumn}
+              currentTicket={currentTicket}
+              setCurrentTicket={setCurrentTicket}
             />
           </div>
         ))

@@ -1,26 +1,26 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { allTasksParams, currentTicketObject, currentColumnObject } from '../../App';
 import './Column.scss';
 
 interface StandardComponentProps {
-  columnValue: allTasksParams, 
-  allTasks: Array<allTasksParams>, 
-  setAllTasks: Dispatch<SetStateAction<Array<allTasksParams>>>, 
-  columnIndex: number, 
-  currentColumn: currentColumnObject, 
-  setCurrentColumn: Dispatch<SetStateAction<currentColumnObject>>, 
-  currentTicket: currentTicketObject, 
+  columnValue: allTasksParams,
+  allTasks: Array<allTasksParams>,
+  setAllTasks: Dispatch<SetStateAction<Array<allTasksParams>>>,
+  columnIndex: number,
+  currentColumn: currentColumnObject,
+  setCurrentColumn: Dispatch<SetStateAction<currentColumnObject>>,
+  currentTicket: currentTicketObject,
   setCurrentTicket: Dispatch<SetStateAction<currentTicketObject>>
 }
 
 const Column = ({
-  columnValue, 
-  allTasks, 
-  setAllTasks, 
-  columnIndex, 
-  currentColumn, 
-  setCurrentColumn, 
-  currentTicket, 
+  columnValue,
+  allTasks,
+  setAllTasks,
+  columnIndex,
+  currentColumn,
+  setCurrentColumn,
+  currentTicket,
   setCurrentTicket
 }: StandardComponentProps) => {
   const [ticketName, setTicketName] = useState('');
@@ -36,7 +36,7 @@ const Column = ({
     setAllTasks(tempArray);
     setTicketName('');
     setIsAdding(false);
-  } 
+  }
 
   const deleteTicket = (index: number) => {
     const tempArray = [...allTasks];
@@ -50,8 +50,8 @@ const Column = ({
     setAllTasks(tempArray);
   }
 
-  const dragStartHandler = (e: React.DragEvent<HTMLDivElement>, columnValue: allTasksParams, index: number) => {
-    setCurrentColumn({value: columnValue, index});
+  const dragStartHandler = (_: any, columnValue: allTasksParams, index: number) => {
+    setCurrentColumn({ value: columnValue, index });
   }
 
   const dropHandler = (e: any, columnValue: allTasksParams) => {
@@ -70,11 +70,11 @@ const Column = ({
   }
 
   const dragEndHandler = (e: any, isWhite = false) => {
-    e.target.style.background = isWhite? 'white': '#f0f0f0';
+    e.target.style.background = isWhite ? 'white' : '#f0f0f0';
   }
 
-  const dragStartHandlerTicket = (e: React.DragEvent<HTMLDivElement>, ticketValue: allTasksParams, index: number) => {
-    setCurrentTicket({value: ticketValue.data[index], index, columnIndex});
+  const dragStartHandlerTicket = (_: any, ticketValue: allTasksParams, index: number) => {
+    setCurrentTicket({ value: ticketValue.data[index], index, columnIndex });
   }
 
   const dropHandlerTicket = (e: any, ticketValue: allTasksParams) => {
@@ -89,7 +89,7 @@ const Column = ({
 
   return (
     <div className="column">
-      <div 
+      <div
         className="column__header"
         draggable
         onDragStart={(e) => dragStartHandler(e, columnValue, columnIndex)}
@@ -99,24 +99,24 @@ const Column = ({
         onDragEnd={dragEndHandler}
       >
         <p>{columnValue.name}</p>
-        {isAdding   
+        {isAdding
           ? <>
-            <input onChange={(e) => setTicketName(e.target.value)} value={ticketName}/>
+            <input onChange={(e) => setTicketName(e.target.value)} value={ticketName} />
             <button onClick={addNewTicket}>
               Done
             </button>
           </>
           : <button onClick={() => setIsAdding(true)}>
-              Add Ticket
-            </button>
+            Add Ticket
+          </button>
         }
         <button onClick={() => deleteColumn()}>Delete Column</button>
       </div>
-      <div  className="column__body">
+      <div className="column__body">
         {
           columnValue.data?.map((ticket: any, index: number) => (
-            <div 
-              key={`${ticket.name}-${index}`} 
+            <div
+              key={`${ticket.name}-${index}`}
               className="column__ticket"
               draggable
               onDragStart={(e) => dragStartHandlerTicket(e, columnValue, index)}
@@ -124,7 +124,7 @@ const Column = ({
               onDragOver={dropOverHandler}
               onDragLeave={(e) => dragEndHandler(e, true)}
               onDragEnd={(e) => dragEndHandler(e, true)}
-            > 
+            >
               <p>{ticket.name}</p>
               <button onClick={() => deleteTicket(index)}>Delete Ticket</button>
             </div>
