@@ -9,7 +9,4 @@
 6. Удалять колонки
 
 Технологии:
-Webpack, React, ES6 (TS будет плюсом), SCSS.
-
-из БЭМ возьмем именование классов.
-Например: block__element_modificator
+CRA, React, ES6 (TS будет плюсом), SCSS.
