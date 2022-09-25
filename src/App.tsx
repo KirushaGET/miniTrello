@@ -2,27 +2,27 @@ import { useState } from 'react';
 import Column from './components/Column/index';
 import './App.scss';
 
-export interface allTasksParams {
+export interface AllTasksParams {
   name: String;
   data: Array<{ name: String } | Object>;
 }
 
-export interface currentTicketObject {
+export interface CurrentTicketObject {
   value: { name: String } | {};
   index: number;
   columnIndex: number;
 }
 
-export interface currentColumnObject {
-  value: allTasksParams;
+export interface CurrentColumnObject {
+  value: AllTasksParams;
   index: number;
 }
 
 const App = () => {
-  const [allTasks, setAllTasks] = useState<Array<allTasksParams>>([]);
+  const [allTasks, setAllTasks] = useState<Array<AllTasksParams>>([]);
   const [columnName, setColumnName] = useState('');
-  const [currentColumn, setCurrentColumn] = useState<currentColumnObject>(Object);
-  const [currentTicket, setCurrentTicket] = useState<currentTicketObject>(Object);
+  const [currentColumn, setCurrentColumn] = useState<CurrentColumnObject>(Object);
+  const [currentTicket, setCurrentTicket] = useState<CurrentTicketObject>(Object);
 
   const newColumn = () => {
     const newColumnValue = {
@@ -30,7 +30,7 @@ const App = () => {
       data: []
     };
 
-    setAllTasks((prev: Array<allTasksParams>) => [...prev, newColumnValue]);
+    setAllTasks((prev: Array<AllTasksParams>) => [...prev, newColumnValue]);
     setColumnName('');
   }
 
@@ -46,7 +46,7 @@ const App = () => {
         <button onClick={newColumn}>Add column</button>
       </div>
       <div className="app__body">
-        {allTasks.map((column: allTasksParams, index: number) => (
+        {allTasks.map((column: AllTasksParams, index: number) => (
           <div
             key={`${column.name}-${index}`}
           >
