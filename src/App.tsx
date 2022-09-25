@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Column from './Component/Column/index';
+import Column from './components/Column/index';
 import './App.scss';
 
 export interface allTasksParams {
