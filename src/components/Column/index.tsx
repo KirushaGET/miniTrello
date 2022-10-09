@@ -1,139 +1,157 @@
-import { useState } from 'react';
-import type { Dispatch, SetStateAction } from 'react';
-import type { AllTasksParams, CurrentTicketObject, CurrentColumnObject } from '../../App';
-import './Column.scss';
+import { useState } from "react";
+
+import "./Column.scss";
+
+export type TicketType = {
+  name: string;
+  index: number;
+  columnIndex: number;
+};
+
+export type ColumnType = {
+  name: string;
+  tickets: TicketType[];
+};
+
+export type CurrentColumnType = {
+  name: string;
+  tickets: TicketType[];
+  index: number;
+};
 
 interface StandardComponentProps {
-  columnValue: AllTasksParams,
-  allTasks: AllTasksParams[],
-  columnIndex: number,
-  currentColumn: CurrentColumnObject,
-  currentTicket: CurrentTicketObject,
-  setCurrentColumn: Dispatch<SetStateAction<CurrentColumnObject>>,
-  setAllTasks: Dispatch<SetStateAction<AllTasksParams[]>>,
-  setCurrentTicket: Dispatch<SetStateAction<CurrentTicketObject>>
+  columnValue: ColumnType;
+  columns: ColumnType[];
+  columnIndex: number;
+  currentColumn: CurrentColumnType | null;
+  setCurrentColumn: (column: CurrentColumnType) => void;
+  setColumns: (columns: ColumnType[]) => void;
 }
 
-const Column = ({
+export const Column = ({
   columnValue,
-  allTasks,
+  columns,
   columnIndex,
   currentColumn,
-  currentTicket,
   setCurrentColumn,
-  setAllTasks,
-  setCurrentTicket
+  setColumns,
 }: StandardComponentProps) => {
-  const [ticketName, setTicketName] = useState('');
+  const [ticketName, setTicketName] = useState("");
   const [isAdding, setIsAdding] = useState(false);
+  const [currentTicket, setCurrentTicket] = useState<TicketType | null>(null);
 
   const addNewTicket = () => {
-    const tempArray = [...allTasks];
+    const tempArray = [...columns];
     const newTicketValue = {
       name: ticketName,
+      index: tempArray[columnIndex].tickets.length,
+      columnIndex,
     };
 
-    tempArray[columnIndex].data.push(newTicketValue);
-    setAllTasks(tempArray);
-    setTicketName('');
+    tempArray[columnIndex].tickets.push(newTicketValue);
+    setColumns(tempArray);
+    setTicketName("");
     setIsAdding(false);
-  }
+  };
 
   const deleteTicket = (index: number) => {
-    const tempArray = [...allTasks];
-    tempArray[columnIndex].data.splice(index, 1);
-    setAllTasks(tempArray);
-  }
+    const tempArray = [...columns];
+    tempArray[columnIndex].tickets.splice(index, 1);
+    setColumns(tempArray);
+  };
 
   const deleteColumn = () => {
-    const tempArray = [...allTasks];
+    const tempArray = [...columns];
     tempArray.splice(columnIndex, 1);
-    setAllTasks(tempArray);
-  }
+    setColumns(tempArray);
+  };
 
-  const dragStartHandler = (_: any, columnValue: AllTasksParams, index: number) => {
-    setCurrentColumn({ value: columnValue, index });
-  }
+  const dragStartHandler = (columnValue: ColumnType, index: number) => {
+    setCurrentColumn({ ...columnValue, index });
+  };
 
-  const dropHandler = (e: any, columnValue: AllTasksParams) => {
-    e.preventDefault();
-    const tempArray = [...allTasks];
-    tempArray.splice(currentColumn.index, 1);
-    const indexNewColumn = allTasks.indexOf(columnValue);
-    tempArray.splice(indexNewColumn, 0, currentColumn.value);
-    setAllTasks(tempArray);
-    e.target.style.background = '#f0f0f0';
-  }
+  const dropHandler = (e: any, columnValue: ColumnType) => {
+    if (currentColumn != null) {
+      e.preventDefault();
+      const tempArray = [...columns];
+      tempArray.splice(currentColumn.index, 1);
+      const indexNewColumn = columns.indexOf(columnValue);
+      tempArray.splice(indexNewColumn, 0, currentColumn);
+      setColumns(tempArray);
+      e.target.style.background = "#f0f0f0";
+    }
+  };
 
   const dropOverHandler = (e: any) => {
     e.preventDefault();
-    e.target.style.background = 'grey';
-  }
+    e.target.style.background = "grey";
+  };
 
   const dragEndHandler = (e: any, isWhite = false) => {
-    e.target.style.background = isWhite ? 'white' : '#f0f0f0';
-  }
+    e.target.style.background = isWhite ? "white" : "#f0f0f0";
+  };
 
-  const dragStartHandlerTicket = (_: any, ticketValue: AllTasksParams, index: number) => {
-    setCurrentTicket({ value: ticketValue.data[index], index, columnIndex });
-  }
+  const dragStartHandlerTicket = (ticketValue: TicketType) => {
+    setCurrentTicket(ticketValue);
+  };
 
-  const dropHandlerTicket = (e: any, ticketValue: AllTasksParams) => {
-    e.preventDefault();
-    const tempArray = [...allTasks];
-    tempArray[currentTicket.columnIndex].data.splice(currentTicket.index, 1);
-    const indexNewColumn = allTasks[columnIndex].data.indexOf(ticketValue);
-    tempArray[columnIndex].data.splice(indexNewColumn, 0, currentTicket.value);
-    setAllTasks(tempArray);
-    e.target.style.background = 'white';
-  }
+  const dropHandlerTicket = (e: any, ticketValue: TicketType) => {
+    if (currentTicket != null) {
+      e.preventDefault();
+      const tempArray = [...columns];
+      tempArray[currentTicket.columnIndex].tickets.splice(
+        currentTicket.index,
+        1
+      );
+      const indexNewColumn = columns[columnIndex].tickets.indexOf(ticketValue);
+      tempArray[columnIndex].tickets.splice(indexNewColumn, 0, currentTicket);
+      setColumns(tempArray);
+      e.target.style.background = "white";
+    }
+  };
 
   return (
     <div className="column">
       <div
         className="column__header"
         draggable
-        onDragStart={(e) => dragStartHandler(e, columnValue, columnIndex)}
+        onDragStart={() => dragStartHandler(columnValue, columnIndex)}
         onDrop={(e) => dropHandler(e, columnValue)}
         onDragOver={dropOverHandler}
         onDragLeave={dragEndHandler}
         onDragEnd={dragEndHandler}
       >
         <p>{columnValue.name}</p>
-        {isAdding
-          ? <>
-            <input onChange={(e) => setTicketName(e.target.value)} value={ticketName} />
-            <button onClick={addNewTicket}>
-              Done
-            </button>
+        {isAdding ? (
+          <>
+            <input
+              onChange={(e) => setTicketName(e.target.value)}
+              value={ticketName}
+            />
+            <button onClick={addNewTicket}>Done</button>
           </>
-          : <button onClick={() => setIsAdding(true)}>
-            Add Ticket
-          </button>
-        }
+        ) : (
+          <button onClick={() => setIsAdding(true)}>Add Ticket</button>
+        )}
         <button onClick={deleteColumn}>Delete Column</button>
       </div>
       <div className="column__body">
-        {
-          columnValue.data?.map((ticket: any, index: number) => (
-            <div
-              key={`${ticket.name}-${index}`}
-              className="column__ticket"
-              draggable
-              onDragStart={(e) => dragStartHandlerTicket(e, columnValue, index)}
-              onDrop={(e) => dropHandlerTicket(e, columnValue)}
-              onDragOver={dropOverHandler}
-              onDragLeave={(e) => dragEndHandler(e, true)}
-              onDragEnd={(e) => dragEndHandler(e, true)}
-            >
-              <p>{ticket.name}</p>
-              <button onClick={() => deleteTicket(index)}>Delete Ticket</button>
-            </div>
-          ))
-        }
+        {columnValue.tickets?.map((ticket, index) => (
+          <div
+            key={`${ticket.name}-${index}`}
+            className="column__ticket"
+            draggable
+            onDragStart={() => dragStartHandlerTicket(ticket)}
+            onDrop={(e) => dropHandlerTicket(e, ticket)}
+            onDragOver={dropOverHandler}
+            onDragLeave={(e) => dragEndHandler(e, true)}
+            onDragEnd={(e) => dragEndHandler(e, true)}
+          >
+            <p>{ticket.name}</p>
+            <button onClick={() => deleteTicket(index)}>Delete Ticket</button>
+          </div>
+        ))}
       </div>
     </div>
   );
-}
-
-export default Column;
+};

@@ -1,71 +1,55 @@
-import { useState } from 'react';
-import Column from './components/Column/index';
-import './App.scss';
-
-export interface AllTasksParams {
-  name: String;
-  data: Array<{ name: String } | Object>;
-}
-
-export interface CurrentTicketObject {
-  value: { name: String } | {};
-  index: number;
-  columnIndex: number;
-}
-
-export interface CurrentColumnObject {
-  value: AllTasksParams;
-  index: number;
-}
+import { useState } from "react";
+import {
+  Column,
+  type ColumnType,
+  type CurrentColumnType,
+} from "./components/Column/index";
+import "./App.scss";
 
 const App = () => {
-  const [allTasks, setAllTasks] = useState<Array<AllTasksParams>>([]);
-  const [columnName, setColumnName] = useState('');
-  const [currentColumn, setCurrentColumn] = useState<CurrentColumnObject>(Object);
-  const [currentTicket, setCurrentTicket] = useState<CurrentTicketObject>(Object);
+  const [columns, setColumns] = useState<ColumnType[]>([]);
+  const [newColumnName, setNewColumnName] = useState("");
+  const [currentColumn, setCurrentColumn] = useState<CurrentColumnType | null>(
+    null
+  );
 
   const newColumn = () => {
     const newColumnValue = {
-      name: columnName,
-      data: []
+      name: newColumnName,
+      tickets: [],
     };
 
-    setAllTasks((prev: Array<AllTasksParams>) => [...prev, newColumnValue]);
-    setColumnName('');
-  }
+    setColumns((prev) => [...prev, newColumnValue]);
+    setNewColumnName("");
+  };
 
   return (
     <div className="app">
       <div className="app__header">
         <p>Please enter the name of new column</p>
         <input
-          onChange={(e) => setColumnName(e.target.value)}
-          value={columnName}
+          onChange={(e) => setNewColumnName(e.target.value)}
+          value={newColumnName}
           className="app_input-header-column"
         />
         <button onClick={newColumn}>Add column</button>
       </div>
       <div className="app__body">
-        {allTasks.map((column: AllTasksParams, index: number) => (
-          <div
-            key={`${column.name}-${index}`}
-          >
+        {columns.map((column, index: number) => (
+          <div key={`${column.name}-${index}`}>
             <Column
               columnValue={column}
               columnIndex={index}
-              allTasks={allTasks}
-              setAllTasks={setAllTasks}
+              columns={columns}
+              setColumns={setColumns}
               currentColumn={currentColumn}
               setCurrentColumn={setCurrentColumn}
-              currentTicket={currentTicket}
-              setCurrentTicket={setCurrentTicket}
             />
           </div>
-        ))
-        }
+        ))}
       </div>
     </div>
   );
-}
+};
 
 export default App;
