@@ -87,7 +87,7 @@ export const Column = ({
     e.target.style.background = "grey";
   };
 
-  const dragEndHandler = (e: any, isWhite = false) => {
+  const dragEndHandler = (e: any, isWhite?: boolean) => {
     e.target.style.background = isWhite ? "white" : "#f0f0f0";
   };
 
