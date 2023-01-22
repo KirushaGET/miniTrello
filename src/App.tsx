@@ -27,14 +27,15 @@ const App = () => {
   const [newColumnName, setNewColumnName] = useState("");
 
   const newColumn = () => {
-    const newColumnValue = {
-      id: uuidv4(),
-      name: newColumnName,
-      tasks: [],
-    };
-
-    setColumns((prev) => [...prev, newColumnValue]);
-    setNewColumnName("");
+    if (newColumnName?.length > 0) {
+      const newColumnValue = {
+        id: uuidv4(),
+        name: newColumnName,
+        tasks: [],
+      };
+      setColumns((prev) => [...prev, newColumnValue]);
+      setNewColumnName("");
+    }
   };
 
   const submitOnEnter = (

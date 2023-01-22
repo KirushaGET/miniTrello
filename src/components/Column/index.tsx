@@ -128,14 +128,16 @@ export const Column = ({
   );
 
   const addNewTaskHandler = () => {
-    const columnsCopy: ColumnType[] = JSON.parse(JSON.stringify(columns));
-    columnsCopy[currentColumnIndex].tasks.push({
-      id: uuidv4(),
-      name: taskName,
-    });
-    setColumns(columnsCopy);
-    setTaskName("");
-    setShowAddTaskButton(false);
+    if (taskName?.length > 0) {
+      const columnsCopy: ColumnType[] = JSON.parse(JSON.stringify(columns));
+      columnsCopy[currentColumnIndex].tasks.push({
+        id: uuidv4(),
+        name: taskName,
+      });
+      setColumns(columnsCopy);
+      setTaskName("");
+      setShowAddTaskButton(false);
+    }
   };
 
   const submitOnEnter = (
