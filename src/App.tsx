@@ -1,26 +1,31 @@
-import { useState } from "react";
-import {
-  Column,
-  type ColumnType,
-  type CurrentColumnType,
-} from "./components/Column/index";
+import { useState, type KeyboardEvent } from "react";
+import { Column, type ColumnType } from "./components/Column/index";
 import "./App.scss";
 
 const App = () => {
-  const [columns, setColumns] = useState<ColumnType[]>([]);
+  const [columns, setColumns] = useState<ColumnType[]>([
+    { name: "test", tasks: [{ name: "123" }, { name: "222" }] },
+    { name: "test2", tasks: [{ name: "1234" }, { name: "2225" }] },
+  ]);
   const [newColumnName, setNewColumnName] = useState("");
-  const [currentColumn, setCurrentColumn] = useState<CurrentColumnType | null>(
-    null
-  );
 
   const newColumn = () => {
     const newColumnValue = {
       name: newColumnName,
-      tickets: [],
+      tasks: [],
     };
 
     setColumns((prev) => [...prev, newColumnValue]);
     setNewColumnName("");
+  };
+
+  const submitOnEnter = (
+    e: KeyboardEvent<HTMLInputElement>,
+    callback: () => void
+  ) => {
+    if (e.key === "Enter") {
+      callback();
+    }
   };
 
   return (
@@ -28,6 +33,7 @@ const App = () => {
       <div className="app__header">
         <p>Please enter the name of new column</p>
         <input
+          onKeyDown={(e) => submitOnEnter(e, newColumn)}
           onChange={(e) => setNewColumnName(e.target.value)}
           value={newColumnName}
           className="app_input-header-column"
@@ -38,12 +44,10 @@ const App = () => {
         {columns.map((column, index: number) => (
           <div key={`${column.name}-${index}`}>
             <Column
-              columnValue={column}
-              columnIndex={index}
+              currentColumnIndex={index}
               columns={columns}
+              currentColumn={column}
               setColumns={setColumns}
-              currentColumn={currentColumn}
-              setCurrentColumn={setCurrentColumn}
             />
           </div>
         ))}
