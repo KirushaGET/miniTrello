@@ -117,8 +117,7 @@ export const Column = ({
   const [taskName, setTaskName] = useState("");
   const [showAddTaskButton, setShowAddTaskButton] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [tasks, setTasks] = useState<TaskType[]>(currentColumn.tasks ?? []);
-  const activeTask = tasks.find((task) => task.id === activeId);
+  const activeTask = currentColumn.tasks.find((task) => task.id === activeId);
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -156,18 +155,16 @@ export const Column = ({
   };
 
   const deleteTaskHandler = (deleteIndex: number) => {
-    const deletedTaskArray = tasks.filter(
+    const deletedTaskArray = currentColumn.tasks.filter(
       (_column, index) => index !== deleteIndex
     );
-    setTasks(deletedTaskArray);
+    const copyColumnsArray = JSON.parse(JSON.stringify(columns));
+    copyColumnsArray[currentColumnIndex].tasks = deletedTaskArray;
+    setColumns(copyColumnsArray);
   };
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
-
-    if (document.body?.style) {
-      document.body.style.cursor = "grabbing";
-    }
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -175,15 +172,17 @@ export const Column = ({
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      const oldIndex = tasks.findIndex((item) => item.id === active.id);
-      const newIndex = tasks.findIndex((item) => item.id === over.id);
-      const newImagesOrder = arrayMove(tasks, oldIndex, newIndex);
+      const oldIndex = currentColumn.tasks.findIndex(
+        (item) => item.id === active.id
+      );
+      const newIndex = currentColumn.tasks.findIndex(
+        (item) => item.id === over.id
+      );
+      const newTasksOrder = arrayMove(currentColumn.tasks, oldIndex, newIndex);
 
-      setTasks(newImagesOrder);
-
-      if (document.body?.style) {
-        document.body.style.cursor = "";
-      }
+      const copyColumnsArray = JSON.parse(JSON.stringify(columns));
+      copyColumnsArray[currentColumnIndex].tasks = newTasksOrder;
+      setColumns(copyColumnsArray);
     }
   };
 
@@ -195,6 +194,7 @@ export const Column = ({
         {showAddTaskButton ? (
           <div>
             <input
+              className="column__header-input"
               value={taskName}
               onKeyDown={(e) => submitOnEnter(e, addNewTaskHandler)}
               onChange={(e) => setTaskName(e.target.value)}
@@ -202,28 +202,32 @@ export const Column = ({
             <button onClick={addNewTaskHandler}>Done</button>
           </div>
         ) : (
-          <button
-            onClick={() => setShowAddTaskButton(true)}
-            className="column__header-add-button"
-          >
-            Add Task
-          </button>
+          <div>
+            <button
+              onClick={() => setShowAddTaskButton(true)}
+              className="column__header-add-button"
+            >
+              Add Task
+            </button>
+            <button onClick={() => deleteColumnHandler(currentColumnIndex)}>
+              Delete Column
+            </button>
+          </div>
         )}
-
-        <button onClick={() => deleteColumnHandler(currentColumnIndex)}>
-          Delete Column
-        </button>
       </div>
       <div className="column__body">
-        {tasks.length > 0 && (
+        {currentColumn.tasks.length > 0 && (
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
             onDragEnd={handleDragEnd}
             onDragStart={handleDragStart}
           >
-            <SortableContext items={tasks} strategy={rectSortingStrategy}>
-              {tasks.map((task, index) => (
+            <SortableContext
+              items={currentColumn.tasks}
+              strategy={rectSortingStrategy}
+            >
+              {currentColumn.tasks.map((task, index) => (
                 <DraggableTaskWrapper key={task.id} id={task.id}>
                   <p className="column__task-text">{task.name}</p>
 

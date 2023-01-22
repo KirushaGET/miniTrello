@@ -37,10 +37,6 @@ export const Columns = ({ columns, setColumns }: ColumnsProps) => {
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
-
-    if (document.body?.style) {
-      document.body.style.cursor = "grabbing";
-    }
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -53,10 +49,6 @@ export const Columns = ({ columns, setColumns }: ColumnsProps) => {
       const newColumnsOrder = arrayMove(columns, oldIndex, newIndex);
 
       setColumns(newColumnsOrder);
-
-      if (document.body?.style) {
-        document.body.style.cursor = "";
-      }
     }
   };
 

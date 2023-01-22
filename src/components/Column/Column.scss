@@ -7,11 +7,23 @@
     background: #f0f0f0;
     height: fit-content;
 
+    &:hover {
+        cursor: grabbing;
+    }
+
+    button {
+        cursor: pointer;
+    }
+
     .column__header {
         display: flex;
         align-items: center;
         outline: 2px solid grey;
         padding: 0 5px;
+
+        .column__header-input {
+            margin: 0 5px;
+        }
 
         .column__header-add-button {
             margin: 0 5px;
