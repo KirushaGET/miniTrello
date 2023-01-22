@@ -4,9 +4,7 @@ import {
   closestCenter,
   DndContext,
   DragOverlay,
-  KeyboardSensor,
   MouseSensor,
-  TouchSensor,
   useSensor,
   useSensors,
   type DragStartEvent,
@@ -14,7 +12,6 @@ import {
 } from "@dnd-kit/core";
 import {
   SortableContext,
-  sortableKeyboardCoordinates,
   arrayMove,
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
@@ -30,10 +27,10 @@ export const Columns = ({ columns, setColumns }: ColumnsProps) => {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   const sensors = useSensors(
-    useSensor(MouseSensor),
-    useSensor(TouchSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
     })
   );
   const activeColumn = columns.find((column) => column.id === activeId);

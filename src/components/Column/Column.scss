@@ -1,11 +1,11 @@
-.column {
+.column__wrapper {
     display: flex;
-    justify-content: center;
     flex-direction: column;
     outline: 2px solid grey;
     margin-left: 1vw;
     min-width: 25vw;
     background: #f0f0f0;
+    height: fit-content;
 
     .column__header {
         display: flex;
@@ -13,13 +13,8 @@
         outline: 2px solid grey;
         padding: 0 5px;
 
-        button {
-            max-height: 40px;
+        .column__header-add-button {
             margin: 0 5px;
-        }
-
-        input {
-            margin-left: 5px;
         }
     }
 
@@ -33,10 +28,11 @@
             text-align: center;
             outline: 2px solid grey;
             margin: 10px 0;
+            padding: 10px;
             background-color: white;
 
-            button {
-                margin: 0 5px;  
+            .column__task-text {
+                margin-right: 5px;
             }
         }
     }
