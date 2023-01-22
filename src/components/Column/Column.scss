@@ -21,10 +21,6 @@
         input {
             margin-left: 5px;
         }
-
-        &:hover {
-            cursor: grab;
-        }
     }
 
     .column__body {
@@ -39,16 +35,8 @@
             margin: 10px 0;
             background-color: white;
 
-            &:hover {
-                cursor: grab;
-            }
-
             button {
                 margin: 0 5px;  
-            }
-
-            p {
-                hyphens: auto;
             }
         }
     }

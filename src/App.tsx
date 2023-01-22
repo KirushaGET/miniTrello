@@ -1,16 +1,34 @@
 import { useState, type KeyboardEvent } from "react";
-import { Column, type ColumnType } from "./components/Column/index";
+import { v4 as uuidv4 } from "uuid";
+
+import { Columns } from "./components/Columns";
+import { type ColumnType } from "./components/Column";
 import "./App.scss";
 
 const App = () => {
   const [columns, setColumns] = useState<ColumnType[]>([
-    { name: "test", tasks: [{ name: "123" }, { name: "222" }] },
-    { name: "test2", tasks: [{ name: "1234" }, { name: "2225" }] },
+    {
+      id: "123321",
+      name: "test",
+      tasks: [
+        { name: "123", id: "1" },
+        { name: "222", id: "12" },
+      ],
+    },
+    {
+      id: "123",
+      name: "test2",
+      tasks: [
+        { name: "1234", id: "123" },
+        { name: "2225", id: "1234" },
+      ],
+    },
   ]);
   const [newColumnName, setNewColumnName] = useState("");
 
   const newColumn = () => {
     const newColumnValue = {
+      id: uuidv4(),
       name: newColumnName,
       tasks: [],
     };
@@ -41,16 +59,7 @@ const App = () => {
         <button onClick={newColumn}>Add column</button>
       </div>
       <div className="app__body">
-        {columns.map((column, index: number) => (
-          <div key={`${column.name}-${index}`}>
-            <Column
-              currentColumnIndex={index}
-              columns={columns}
-              currentColumn={column}
-              setColumns={setColumns}
-            />
-          </div>
-        ))}
+        <Columns columns={columns} setColumns={setColumns} />
       </div>
     </div>
   );
