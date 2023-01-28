@@ -10,12 +10,10 @@
     "skipLibCheck": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "jsx": "react-jsx",
@@ -23,5 +21,6 @@
   "include": [
     "**/*.ts",
     "**/*.tsx"
-  ]
+  ],
+  "exclude": ["jest.config.ts", "jest.setup.ts"]
 }
